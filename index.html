@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underground Water Tank Design | IS 1893:2016 Part 2</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+
+        button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button.secondary {
+            background-color: var(--gray);
+        }
+
+        button.success {
+            background-color: var(--success);
+        }
+
+        button.danger {
+            background-color: var(--danger);
+        }
+
+        button.warning {
+            background-color: var(--warning);
+        }
+
+        .results {
+            margin-top: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .pass {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .fail {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .note {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .calculation-steps {
+            background-color: #f9f9f9;
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .calculation-step {
+            margin-bottom: 15px;
+        }
+
+        .formula {
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background-color: var(--light);
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .tab-container {
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            color: var(--dark);
+            white-space: nowrap;
+        }
+
+        .tab-button.active {
+            border-bottom: 3px solid var(--secondary);
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .print-only {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tab-buttons {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+                font-size: 12pt;
+                padding: 0;
+            }
+            
+            .container {
+                max-width: 100%;
+                margin: 0;
+                padding: 10px;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                page-break-inside: avoid;
+                margin-bottom: 15px;
+            }
+            
+            button {
+                display: none;
+            }
+            
+            .print-only {
+                display: block;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .no-print {
+                display: none;
+            }
+            
+            .tab-content {
+                display: block !important;
+            }
+            
+            .calculation-steps {
+                page-break-inside: avoid;
+            }
+            
+            table {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="no-print">
+            <header>
+                <h1>Underground Water Tank Design</h1>
+                <p>As per IS 1893:2016 (Part 2) and IS 3370:2009</p>
+            </header>
+        </div>
+
+        <div class="print-only">
+            <h1>Underground Water Tank Design Report</h1>
+            <p>As per IS 1893:2016 (Part 2) and IS 3370:2009</p>
+            <p>Date: <span id="print-date"></span></p>
+        </div>
+
+        <div class="card no-print">
+            <div class="tab-container">
+                <div class="tab-buttons">
+                    <button class="tab-button active" onclick="openTab('input-tab')">Design Inputs</button>
+                    <button class="tab-button" onclick="openTab('calculations-tab')">Calculations</button>
+                    <button class="tab-button" onclick="openTab('results-tab')">Design Results</button>
+                    <button class="tab-button" onclick="openTab('summary-tab')">Summary</button>
+                </div>
+                
+                <div id="input-tab" class="tab-content active">
+                    <h2>Tank Geometry</h2>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="tank-length">Length (L) (m)</label>
+                            <input type="number" id="tank-length" step="0.1" min="1" value="21" onchange="calculateDesign()">
+                        </div>
+                        <div class="form-group">
+                            <label for="tank-width">Width (W) (m)</label>
+                            <input type="number" id="tank-width" step="0.1" min="1" value="5.5" onchange="calculateDesign()">
+                        </div>
+                        <div class="form-group">
+                            <label for="tank-depth">Depth (D) (m)</label>
+                            <input type="number" id="tank-depth" step="0.1" min="1" value="4" onchange="calculateDesign()">
+                        </div>
+                    </div>
+
+                    <h2>Material Properties</h2>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="concrete-grade">Concrete Grade</label>
+                            <select id="concrete-grade" onchange="calculateDesign()">
+                                <option value="M20">M20</option>
+                                <option value="M25">M25</option>
+                                <option value="M30" selected>M30</option>
+                                <option value="M35">M35</option>
+                                <option value="M40">M40</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="steel-grade">Steel Grade</label>
+                            <select id="steel-grade" onchange="calculateDesign()">
+                                <option value="Fe415" selected>Fe415</option>
+                                <option value="Fe500">Fe500</option>
+                                <option value="Fe550">Fe550</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="water-density">Water Density (kN/m³)</label>
+                            <input type="number" id="water-density" step="0.01" min="9" max="10" value="9.81" onchange="calculateDesign()">
+                        </div>
+                    </div>
+
+                    <h2>Structural Parameters</h2>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="wall-thickness">Wall Thickness (mm)</label>
+                            <input type="number" id="wall-thickness" step="10" min="150" max="500" value="300" onchange="calculateDesign()">
+                        </div>
+                        <div class="form-group">
+                            <label for="base-thickness">Base Slab Thickness (mm)</label>
+                            <input type="number" id="base-thickness" step="10" min="150" max="500" value="200" onchange="calculateDesign()">
+                        </div>
+                        <div class="form-group">
+                            <label for="vert-bar-size">Vertical Bar Diameter (mm)</label>
+                            <select id="vert-bar-size" onchange="calculateDesign()">
+                                <option value="8">8mm</option>
+                                <option value="10">10mm</option>
+                                <option value="12" selected>12mm</option>
+                                <option value="16">16mm</option>
+                                <option value="20">20mm</option>
+                                <option value="25">25mm</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="vert-bar-spacing">Vertical Bar Spacing (mm)</label>
+                            <select id="vert-bar-spacing" onchange="calculateDesign()">
+                                <option value="100">100mm</option>
+                                <option value="125">125mm</option>
+                                <option value="150" selected>150mm</option>
+                                <option value="175">175mm</option>
+                                <option value="200">200mm</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="horz-bar-size">Horizontal Bar Diameter (mm)</label>
+                            <select id="horz-bar-size" onchange="calculateDesign()">
+                                <option value="8">8mm</option>
+                                <option value="10" selected>10mm</option>
+                                <option value="12">12mm</option>
+                                <option value="16">16mm</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="horz-bar-spacing">Horizontal Bar Spacing (mm)</label>
+                            <select id="horz-bar-spacing" onchange="calculateDesign()">
+                                <option value="100">100mm</option>
+                                <option value="125">125mm</option>
+                                <option value="150" selected>150mm</option>
+                                <option value="175">175mm</option>
+                                <option value="200">200mm</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h2>Seismic Parameters</h2>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="seismic-zone">Seismic Zone</label>
+                            <select id="seismic-zone" onchange="calculateDesign()">
+                                <option value="II">Zone II</option>
+                                <option value="III" selected>Zone III</option>
+                                <option value="IV">Zone IV</option>
+                                <option value="V">Zone V</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="soil-type">Soil Type</label>
+                            <select id="soil-type" onchange="calculateDesign()">
+                                <option value="hard">Hard Soil</option>
+                                <option value="medium" selected>Medium Soil</option>
+                                <option value="soft">Soft Soil</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="importance-factor">Importance Factor (I)</label>
+                            <input type="number" id="importance-factor" step="0.1" min="1" max="1.5" value="1.5" onchange="calculateDesign()">
+                        </div>
+                    </div>
+
+                    <h2>Other Parameters</h2>
+                    <div class="grid">
+                        <div class="form-group">
+                            <label for="sbc">Soil Bearing Capacity (kN/m²)</label>
+                            <input type="number" id="sbc" step="1" min="50" value="100" onchange="calculateDesign()">
+                        </div>
+                        <div class="form-group">
+                            <label for="cover">Clear Cover (mm)</label>
+                            <input type="number" id="cover" step="5" min="20" max="75" value="40" onchange="calculateDesign()">
+                        </div>
+                        <div class="form-group">
+                            <label for="friction-coeff">Soil Friction Coefficient (μ)</label>
+                            <input type="number" id="friction-coeff" step="0.05" min="0.1" max="0.5" value="0.3" onchange="calculateDesign()">
+                        </div>
+                    </div>
+
+                    <button class="success" onclick="calculateDesign()">Calculate Design</button>
+                    <button class="warning" onclick="printDesignReport()">Print Design Report</button>
+                </div>
+                
+                <div id="calculations-tab" class="tab-content">
+                    <h2>Design Calculations</h2>
+                    <div id="calculation-steps-container"></div>
+                </div>
+                
+                <div id="results-tab" class="tab-content">
+                    <h2>Design Results</h2>
+                    <div id="design-results-container"></div>
+                </div>
+                
+                <div id="summary-tab" class="tab-content">
+                    <h2>Design Summary</h2>
+                    <div id="design-summary-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Printable content -->
+        <div id="printable-content" style="display: none;">
+            <div class="card">
+                <h2>Design Input Parameters</h2>
+                <div id="print-input-parameters"></div>
+            </div>
+
+            <div class="card">
+                <h2>Step-by-Step Calculations</h2>
+                <div id="print-calculation-steps"></div>
+            </div>
+
+            <div class="card">
+                <h2>Design Results</h2>
+                <div id="print-design-results"></div>
+            </div>
+
+            <div class="card">
+                <h2>Design Summary</h2>
+                <div id="print-design-summary"></div>
+            </div>
+        </div>
+
+        <div class="note no-print">
+            <p><strong>Note:</strong> This design is based on IS 1893:2016 (Part 2) for seismic design and IS 3370:2009 for concrete liquid retaining structures. For final construction, the design should be verified by a licensed structural engineer.</p>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let designData = {};
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default values
+            calculateDesign();
+            
+            // Set current date for print
+            const today = new Date();
+            document.getElementById('print-date').textContent = today.toLocaleDateString();
+        });
+        
+        function openTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Activate selected tab
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+        
+        function calculateDesign() {
+            // Get input values
+            designData = {
+                // Tank geometry
+                length: parseFloat(document.getElementById('tank-length').value),
+                width: parseFloat(document.getElementById('tank-width').value),
+                depth: parseFloat(document.getElementById('tank-depth').value),
+                
+                // Material properties
+                concreteGrade: document.getElementById('concrete-grade').value,
+                steelGrade: document.getElementById('steel-grade').value,
+                waterDensity: parseFloat(document.getElementById('water-density').value),
+                
+                // Structural parameters
+                wallThickness: parseFloat(document.getElementById('wall-thickness').value),
+                baseThickness: parseFloat(document.getElementById('base-thickness').value),
+                barSizeVert: parseFloat(document.getElementById('vert-bar-size').value),
+                barSpacingVert: parseFloat(document.getElementById('vert-bar-spacing').value),
+                barSizeHorz: parseFloat(document.getElementById('horz-bar-size').value),
+                barSpacingHorz: parseFloat(document.getElementById('horz-bar-spacing').value),
+                
+                // Seismic parameters
+                seismicZone: document.getElementById('seismic-zone').value,
+                soilType: document.getElementById('soil-type').value,
+                importanceFactor: parseFloat(document.getElementById('importance-factor').value),
+                
+                // Other parameters
+                sbc: parseFloat(document.getElementById('sbc').value),
+                cover: parseFloat(document.getElementById('cover').value),
+                frictionCoeff: parseFloat(document.getElementById('friction-coeff').value)
+            };
+            
+            // Calculate derived parameters
+            designData.volume = designData.length * designData.width * designData.depth;
+            designData.volumeLiters = designData.volume * 1000;
+            
+            // Set zone factor (Z)
+            switch(designData.seismicZone) {
+                case 'II': designData.z = 0.10; break;
+                case 'III': designData.z = 0.16; break;
+                case 'IV': designData.z = 0.24; break;
+                case 'V': designData.z = 0.36; break;
+                default: designData.z = 0.16;
+            }
+            
+            // Set spectral acceleration (Sa/g)
+            switch(designData.soilType) {
+                case 'hard': designData.sa = 1.0; break;
+                case 'medium': designData.sa = 2.5; break;
+                case 'soft': designData.sa = 3.0; break;
+                default: designData.sa = 2.5;
+            }
+            
+            // Set concrete properties
+            switch(designData.concreteGrade) {
+                case 'M20': 
+                    designData.sigmaCt = 1.7;
+                    designData.sigmaCtb = 1.7;
+                    break;
+                case 'M25': 
+                    designData.sigmaCt = 1.8;
+                    designData.sigmaCtb = 1.9;
+                    break;
+                case 'M30': 
+                    designData.sigmaCt = 2.0;
+                    designData.sigmaCtb = 2.2;
+                    break;
+                case 'M35': 
+                    designData.sigmaCt = 2.2;
+                    designData.sigmaCtb = 2.5;
+                    break;
+                case 'M40': 
+                    designData.sigmaCt = 2.4;
+                    designData.sigmaCtb = 2.7;
+                    break;
+                default:
+                    designData.sigmaCt = 2.0;
+                    designData.sigmaCtb = 2.2;
+            }
+            
+            // Set steel properties
+            switch(designData.steelGrade) {
+                case 'Fe415': designData.fy = 415; break;
+                case 'Fe500': designData.fy = 500; break;
+                case 'Fe550': designData.fy = 550; break;
+                default: designData.fy = 415;
+            }
+            
+            // Calculate effective depth
+            designData.effectiveDepth = designData.wallThickness - designData.cover - (designData.barSizeVert/2);
+            
+            // Calculate provided reinforcement area
+            designData.astProvidedVert = (Math.PI * Math.pow(designData.barSizeVert, 2) / 4) * (1000 / designData.barSpacingVert);
+            designData.astProvidedHorz = (Math.PI * Math.pow(designData.barSizeHorz, 2) / 4) * (1000 / designData.barSpacingHorz);
+            
+            // Calculate hydrodynamic pressures
+            calculateHydrodynamicPressures();
+            
+            // Calculate bending moments
+            calculateBendingMoments();
+            
+            // Calculate required reinforcement
+            calculateRequiredReinforcement();
+            
+            // Check buoyancy
+            checkBuoyancy();
+            
+            // Verify crack width
+            verifyCrackWidth();
+            
+            // Calculate quantities
+            calculateQuantities();
+            
+            // Update all displays
+            updateCalculationSteps();
+            updateDesignResults();
+            updateDesignSummary();
+            updatePrintContent();
+        }
+        
+        function calculateHydrodynamicPressures() {
+            // Seismic coefficient (Ah)
+            designData.ah = (designData.z * designData.importanceFactor * designData.sa) / (2 * 2.5);
+            
+            // Impulsive pressure (Pi)
+            designData.pi = (designData.ah * designData.waterDensity * designData.depth) / 2;
+            
+            // Convective pressure (Pc)
+            const lhRatio = designData.length / designData.depth;
+            const coshValue = Math.cosh(3.16 * designData.depth / designData.length);
+            designData.pc = 0.5 * designData.waterDensity * designData.depth * coshValue;
+            
+            // Total pressure
+            designData.pTotal = designData.pi + designData.pc;
+        }
+        
+        function calculateBendingMoments() {
+            // Long wall moment
+            designData.mStaticLong = 0.03 * designData.waterDensity * Math.pow(designData.depth, 3);
+            designData.mSeismicLong = 1.5 * designData.pTotal;
+            designData.mTotalLong = designData.mStaticLong + designData.mSeismicLong;
+            
+            // Short wall moment
+            designData.mStaticShort = 0.032 * designData.waterDensity * Math.pow(designData.depth, 3);
+            designData.mSeismicShort = 1.5 * designData.pTotal;
+            designData.mTotalShort = designData.mStaticShort + designData.mSeismicShort;
+            
+            // Design moment (use larger of the two)
+            designData.designMoment = Math.max(designData.mTotalLong, designData.mTotalShort);
+        }
+        
+        function calculateRequiredReinforcement() {
+            // Calculate required reinforcement
+            designData.astRequired = (designData.designMoment * 1e6) / (0.87 * designData.fy * designData.effectiveDepth);
+            
+            // Check minimum reinforcement (0.3% of gross area)
+            designData.astMin = 0.003 * designData.wallThickness * 1000;
+            
+            // Check if provided reinforcement is adequate
+            designData.reinforcementAdequate = designData.astProvidedVert >= Math.max(designData.astRequired, designData.astMin);
+        }
+        
+        function checkBuoyancy() {
+            // Upward force
+            designData.upForce = designData.waterDensity * designData.depth;
+            
+            // Tank self-weight
+            const longWallWeight = 2 * designData.length * (designData.wallThickness/1000) * 25; // 25 kN/m³ for concrete
+            const shortWallWeight = 2 * designData.width * (designData.wallThickness/1000) * 25;
+            const baseWeight = designData.length * designData.width * (designData.baseThickness/1000) * 25;
+            
+            designData.selfWeight = longWallWeight + shortWallWeight + baseWeight;
+            
+            // Soil friction resistance
+            designData.frictionResistance = designData.frictionCoeff * designData.sbc * designData.length * designData.width;
+            
+            // Total resistance
+            designData.totalResistance = designData.selfWeight + designData.frictionResistance;
+            
+            // Factor of safety
+            designData.fos = designData.totalResistance / (designData.upForce * designData.length * designData.width);
+        }
+        
+        function verifyCrackWidth() {
+            // Simplified crack width calculation
+            const acr = designData.cover + designData.barSizeVert/2;
+            designData.crackWidth = 1.7 * Math.pow(acr * 0.0005, 1/3);
+        }
+        
+        function calculateQuantities() {
+            // Concrete quantity
+            const wallsVolume = 2 * (designData.length + designData.width) * designData.depth * (designData.wallThickness/1000);
+            const baseVolume = designData.length * designData.width * (designData.baseThickness/1000);
+            designData.concreteQuantity = wallsVolume + baseVolume;
+            
+            // Steel quantity
+            const vertBarsLength = designData.depth * 2 * (designData.length + designData.width) * 1000 / designData.barSpacingVert;
+            const horzBarsLength = (designData.length + designData.width) * 2 * (designData.depth * 1000 / designData.barSpacingHorz);
+            
+            const vertBarsWeight = vertBarsLength * Math.PI * Math.pow(designData.barSizeVert/2, 2) * 7850 / 1e6; // kg
+            const horzBarsWeight = horzBarsLength * Math.PI * Math.pow(designData.barSizeHorz/2, 2) * 7850 / 1e6; // kg
+            
+            designData.steelQuantity = vertBarsWeight + horzBarsWeight;
+            
+            // Waterproofing area
+            designData.waterproofingArea = (designData.length * designData.width) + 
+                                          (2 * (designData.length + designData.width) * designData.depth);
+        }
+        
+        function updateCalculationSteps() {
+            const container = document.getElementById('calculation-steps-container');
+            container.innerHTML = `
+                <div id="hydrodynamic-calcs">
+                    <h3>Hydrodynamic Pressure Calculation</h3>
+                    <div class="calculation-steps">
+                        <div class="calculation-step">
+                            <strong>1. Seismic Coefficient (A<sub>h</sub>):</strong>
+                            <div class="formula">A<sub>h</sub> = (Z·I·S<sub>a</sub>/g)/(2·R)</div>
+                            <p>Where:</p>
+                            <ul>
+                                <li>Z = ${designData.z} (Zone ${designData.seismicZone})</li>
+                                <li>I = ${designData.importanceFactor} (Importance Factor)</li>
+                                <li>S<sub>a</sub>/g = ${designData.sa} (${designData.soilType} Soil)</li>
+                                <li>R = 2.5 (Response Reduction Factor)</li>
+                            </ul>
+                            <p>A<sub>h</sub> = (${designData.z} × ${designData.importanceFactor} × ${designData.sa}) / (2 × 2.5) = ${designData.ah.toFixed(2)}</p>
+                        </div>
+                        
+                        <div class="calculation-step">
+                            <strong>2. Impulsive Pressure (P<sub>i</sub>):</strong>
+                            <div class="formula">P<sub>i</sub> = (A<sub>h</sub>·ρ·H)/2</div>
+                            <p>Where:</p>
+                            <ul>
+                                <li>ρ = ${designData.waterDensity} kN/m³ (Water Density)</li>
+                                <li>H = ${designData.depth} m (Water Depth)</li>
+                            </ul>
+                            <p>P<sub>i</sub> = (${designData.ah.toFixed(2)} × ${designData.waterDensity} × ${designData.depth}) / 2 = ${designData.pi.toFixed(2)} kN/m²</p>
+                        </div>
+                        
+                        <div class="calculation-step">
+                            <strong>3. Convective Pressure (P<sub>c</sub>):</strong>
+                            <div class="formula">P<sub>c</sub> = 0.5·ρ·H·cosh(3.16·h/L)</div>
+                            <p>Where L/H = ${(designData.length / designData.depth).toFixed(2)}</p>
+                            <p>P<sub>c</sub> = 0.5 × ${designData.waterDensity} × ${designData.depth} × cosh(${3.16 * designData.depth / designData.length}) = ${designData.pc.toFixed(2)} kN/m²</p>
+                        </div>
+                        
+                        <div class="calculation-step">
+                            <strong>4. Total Hydrodynamic Pressure (P):</strong>
+                            <div class="formula">P = P<sub>i</sub> + P<sub>c</sub></div>
+                            <p>P = ${designData.pi.toFixed(2)} + ${designData.pc.toFixed(2)} = ${designData.pTotal.toFixed(2)} kN/m²</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="bending-moment-calcs">
+                    <h3>Bending Moment Calculation</h3>
+                    <div class="calculation-steps">
+                        <div class="calculation-step">
+                            <strong>1. Long Wall (${designData.length}m):</strong>
+                            <div class="formula">M = 0.03·ρ·H³ + 1.5·P</div>
+                            <p>M = 0.03 × ${designData.waterDensity} × ${designData.depth}³ + 1.5 × ${designData.pTotal.toFixed(2)}</p>
+                            <p>M = ${designData.mStaticLong.toFixed(2)} + ${designData.mSeismicLong.toFixed(2)} = ${designData.mTotalLong.toFixed(2)} kNm/m</p>
+                        </div>
+                        
+                        <div class="calculation-step">
+                            <strong>2. Short Wall (${designData.width}m):</strong>
+                            <div class="formula">M = 0.032·ρ·H³ + 1.5·P</div>
+                            <p>M = 0.032 × ${designData.waterDensity} × ${designData.depth}³ + 1.5 × ${designData.pTotal.toFixed(2)}</p>
+                            <p>M = ${designData.mStaticShort.toFixed(2)} + ${designData.mSeismicShort.toFixed(2)} = ${designData.mTotalShort.toFixed(2)} kNm/m</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="wall-design-calcs">
+                    <h3>Wall Design Verification</h3>
+                    <div class="calculation-steps">
+                        <div class="calculation-step">
+                            <strong>1. Provided Wall Thickness:</strong>
+                            <p>${designData.wallThickness} mm</p>
+                            <p>Effective depth (d) = Wall thickness - cover - Φ/2 = ${designData.wallThickness} - ${designData.cover} - ${designData.barSizeVert/2} = ${designData.effectiveDepth} mm</p>
+                        </div>
+                        
+                        <div class="calculation-step">
+                            <strong>2. Reinforcement Verification:</strong>
+                            <div class="formula">A<sub>st</sub> = M/(0.87·f<sub>y</sub>·d)</div>
+                            <p>A<sub>st</sub> required = ${designData.designMoment.toFixed(2)} × 10⁶ / (0.87 × ${designData.fy} × ${designData.effectiveDepth}) = ${Math.round(designData.astRequired)} mm²/m</p>
+                            <p>Minimum reinforcement = 0.3% = ${Math.round(designData.astMin)} mm²/m</p>
+                            <p>Provided vertical reinforcement = ${designData.barSizeVert}mm Φ @ ${designData.barSpacingVert}mm c/c = ${Math.round(designData.astProvidedVert)} mm²/m</p>
+                            <p>Provided horizontal reinforcement = ${designData.barSizeHorz}mm Φ @ ${designData.barSpacingHorz}mm c/c = ${Math.round(designData.astProvidedHorz)} mm²/m</p>
+                            <p class="${designData.reinforcementAdequate ? 'pass' : 'fail'}">${designData.reinforcementAdequate ? 'PASS (Provided ≥ Required)' : 'FAIL (Provided < Required)'}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="buoyancy-calcs">
+                    <h3>Buoyancy Check</h3>
+                    <div class="calculation-steps">
+                        <div class="calculation-step">
+                            <strong>1. Upward Force:</strong>
+                            <div class="formula">F<sub>up</sub> = γ<sub>w</sub>·D</div>
+                            <p>F<sub>up</sub> = 9.81 × ${designData.depth} = ${designData.upForce.toFixed(2)} kN/m²</p>
+                        </div>
+                        
+                        <div class="calculation-step">
+                            <strong>2. Downward Resistance:</strong>
+                            <div class="formula">W<sub>tank</sub> + μ·SBC·Area</div>
+                            <p>W<sub>tank</sub> = (2×${designData.length}×${(designData.wallThickness/1000).toFixed(3)}×25) + (2×${designData.width}×${(designData.wallThickness/1000).toFixed(3)}×25) = ${designData.selfWeight.toFixed(1)} kN/m</p>
+                            <p>Soil friction = ${designData.frictionCoeff} × ${designData.sbc} × ${designData.length} × ${designData.width} = ${designData.frictionResistance.toFixed(1)} kN</p>
+                            <p>Total resistance = ${designData.totalResistance.toFixed(1)} kN</p>
+                        </div>
+                        
+                        <div class="calculation-step">
+                            <strong>3. Factor of Safety:</strong>
+                            <div class="formula">FOS = Resistance / (F<sub>up</sub>·Area)</div>
+                            <p>FOS = ${designData.totalResistance.toFixed(1)} / (${designData.upForce.toFixed(2)} × ${designData.length} × ${designData.width}) = ${designData.fos.toFixed(1)}</p>
+                            <p class="${designData.fos >= 1.5 ? 'pass' : 'fail'}">${designData.fos >= 1.5 ? 'Safe (FOS > 1.5)' : 'Unsafe (FOS < 1.5)'}</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="crack-calcs">
+                    <h3>Crack Width Verification</h3>
+                    <div class="calculation-steps">
+                        <div class="calculation-step">
+                            <strong>Calculated Crack Width:</strong>
+                            <div class="formula">w = β·∛(a<sub>cr</sub>·ε<sub>m</sub>)</div>
+                            <p>Where:</p>
+                            <ul>
+                                <li>β = 1.7 (deformed bars)</li>
+                                <li>a<sub>cr</sub> = cover + Φ/2 = ${designData.cover} + ${designData.barSizeVert/2} = ${designData.cover + designData.barSizeVert/2} mm</li>
+                                <li>ε<sub>m</sub> = 0.0005 (for ${designData.concreteGrade})</li>
+                            </ul>
+                            <p>w = 1.7 × ∛(${designData.cover + designData.barSizeVert/2} × 0.0005) = ${designData.crackWidth.toFixed(2)} mm</p>
+                            <p class="${designData.crackWidth <= 0.2 ? 'pass' : 'fail'}">${designData.crackWidth <= 0.2 ? 'Safe (w ≤ 0.2mm)' : 'Unsafe (w > 0.2mm)'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function updateDesignResults() {
+            const container = document.getElementById('design-results-container');
+            container.innerHTML = `
+                <div class="grid">
+                    <div class="summary-card">
+                        <label>Wall Thickness</label>
+                        <div class="summary-value">${designData.wallThickness} mm</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <label>Base Slab Thickness</label>
+                        <div class="summary-value">${designData.baseThickness} mm</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <label>Vertical Reinforcement</label>
+                        <div class="summary-value">${designData.barSizeVert}mm Φ @ ${designData.barSpacingVert}mm c/c</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <label>Horizontal Reinforcement</label>
+                        <div class="summary-value">${designData.barSizeHorz}mm Φ @ ${designData.barSpacingHorz}mm c/c</div>
+                    </div>
+                </div>
+                
+                <h3>Design Checks</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Check</th>
+                            <th>Value</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Bending Capacity</td>
+                            <td>${designData.designMoment.toFixed(2)} kNm/m</td>
+                            <td class="${designData.reinforcementAdequate ? 'pass' : 'fail'}">${designData.reinforcementAdequate ? 'PASS' : 'FAIL'}</td>
+                        </tr>
+                        <tr>
+                            <td>Buoyancy Safety</td>
+                            <td>FOS = ${designData.fos.toFixed(1)}</td>
+                            <td class="${designData.fos >= 1.5 ? 'pass' : 'fail'}">${designData.fos >= 1.5 ? 'PASS' : 'FAIL'}</td>
+                        </tr>
+                        <tr>
+                            <td>Crack Width</td>
+                            <td>${designData.crackWidth.toFixed(2)} mm</td>
+                            <td class="${designData.crackWidth <= 0.2 ? 'pass' : 'fail'}">${designData.crackWidth <= 0.2 ? 'PASS' : 'FAIL'}</td>
+                        </tr>
+                        <tr>
+                            <td>Minimum Reinforcement</td>
+                            <td>0.3% (${Math.round(designData.astMin)} mm²/m)</td>
+                            <td class="${designData.astProvidedVert >= designData.astMin ? 'pass' : 'fail'}">${designData.astProvidedVert >= designData.astMin ? 'PASS' : 'FAIL'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Material Quantities (Approximate)</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Concrete (${designData.concreteGrade})</td>
+                            <td>${designData.concreteQuantity.toFixed(1)} m³</td>
+                        </tr>
+                        <tr>
+                            <td>Steel (${designData.steelGrade})</td>
+                            <td>${Math.round(designData.steelQuantity)} kg</td>
+                        </tr>
+                        <tr>
+                            <td>Waterproofing</td>
+                            <td>${Math.round(designData.waterproofingArea)} m²</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+        
+        function updateDesignSummary() {
+            const container = document.getElementById('design-summary-container');
+            container.innerHTML = `
+                <div class="summary-card">
+                    <h3>Tank Specifications</h3>
+                    <p>Dimensions: ${designData.length}m (L) × ${designData.width}m (W) × ${designData.depth}m (D)</p>
+                    <p>Capacity: ${Math.round(designData.volume)} m³ (${Math.round(designData.volumeLiters).toLocaleString()} liters)</p>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>Structural Design</h3>
+                    <ul>
+                        <li>Wall thickness: <strong>${designData.wallThickness} mm</strong> with <strong>${designData.barSizeVert}mm Φ @ ${designData.barSpacingVert}mm c/c</strong> (vertical)</li>
+                        <li>Horizontal reinforcement: <strong>${designData.barSizeHorz}mm Φ @ ${designData.barSpacingHorz}mm c/c</strong></li>
+                        <li>Base slab: <strong>${designData.baseThickness} mm</strong> thick with minimum reinforcement</li>
+                        <li>Concrete grade: <strong>${designData.concreteGrade}</strong></li>
+                        <li>Steel grade: <strong>${designData.steelGrade}</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>Safety Checks</h3>
+                    <ul>
+                        <li>Reinforcement adequacy: <strong class="${designData.reinforcementAdequate ? 'pass' : 'fail'}">${designData.reinforcementAdequate ? 'PASS' : 'FAIL'}</strong></li>
+                        <li>Buoyancy FOS: <strong class="${designData.fos >= 1.5 ? 'pass' : 'fail'}">${designData.fos.toFixed(1)}</strong> (${designData.fos >= 1.5 ? 'Safe' : 'Unsafe'})</li>
+                        <li>Maximum crack width: <strong class="${designData.crackWidth <= 0.2 ? 'pass' : 'fail'}">${designData.crackWidth.toFixed(2)} mm</strong> (${designData.crackWidth <= 0.2 ? 'Safe' : 'Unsafe'})</li>
+                        <li>Seismic performance: <strong>Designed for Zone ${designData.seismicZone}</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="summary-card">
+                    <h3>Recommendations</h3>
+                    <ol>
+                        <li>Use <strong>${designData.concreteGrade} concrete</strong> with proper curing</li>
+                        <li>Provide <strong>construction joints</strong> with waterstops every 10-12m</li>
+                        <li>Apply <strong>bituminous coating</strong> for waterproofing</li>
+                        <li>Use <strong>non-shrink grout</strong> for all joints</li>
+                        <li>Perform <strong>water tightness test</strong> before commissioning</li>
+                        ${!designData.reinforcementAdequate ? '<li class="fail">Increase reinforcement to meet design requirements</li>' : ''}
+                        ${designData.fos < 1.5 ? '<li class="fail">Consider increasing tank weight or soil friction to improve buoyancy safety</li>' : ''}
+                        ${designData.crackWidth > 0.2 ? '<li class="fail">Consider increasing cover or reducing bar size to control crack width</li>' : ''}
+                    </ol>
+                </div>
+                
+                <button class="warning" onclick="printDesignReport()">Print Design Report</button>
+            `;
+        }
+        
+        function updatePrintContent() {
+            // Update input parameters for print
+            document.getElementById('print-input-parameters').innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tank Length (L)</td>
+                            <td>${designData.length} m</td>
+                        </tr>
+                        <tr>
+                            <td>Tank Width (W)</td>
+                            <td>${designData.width} m</td>
+                        </tr>
+                        <tr>
+                            <td>Tank Depth (D)</td>
+                            <td>${designData.depth} m</td>
+                        </tr>
+                        <tr>
+                            <td>Wall Thickness</td>
+                            <td>${designData.wallThickness} mm</td>
+                        </tr>
+                        <tr>
+                            <td>Base Slab Thickness</td>
+                            <td>${designData.baseThickness} mm</td>
+                        </tr>
+                        <tr>
+                            <td>Vertical Reinforcement</td>
+                            <td>${designData.barSizeVert}mm Φ @ ${designData.barSpacingVert}mm c/c</td>
+                        </tr>
+                        <tr>
+                            <td>Horizontal Reinforcement</td>
+                            <td>${designData.barSizeHorz}mm Φ @ ${designData.barSpacingHorz}mm c/c</td>
+                        </tr>
+                        <tr>
+                            <td>Concrete Grade</td>
+                            <td>${designData.concreteGrade}</td>
+                        </tr>
+                        <tr>
+                            <td>Steel Grade</td>
+                            <td>${designData.steelGrade}</td>
+                        </tr>
+                        <tr>
+                            <td>Seismic Zone</td>
+                            <td>Zone ${designData.seismicZone}</td>
+                        </tr>
+                        <tr>
+                            <td>Soil Type</td>
+                            <td>${designData.soilType}</td>
+                        </tr>
+                        <tr>
+                            <td>Soil Bearing Capacity</td>
+                            <td>${designData.sbc} kN/m²</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+            
+            // Copy calculation steps for print
+            document.getElementById('print-calculation-steps').innerHTML = document.getElementById('calculation-steps-container').innerHTML;
+            
+            // Copy design results for print
+            document.getElementById('print-design-results').innerHTML = document.getElementById('design-results-container').innerHTML;
+            
+            // Copy design summary for print
+            document.getElementById('print-design-summary').innerHTML = document.getElementById('design-summary-container').innerHTML;
+        }
+        
+        function printDesignReport() {
+            // Update the print date
+            const today = new Date();
+            document.getElementById('print-date').textContent = today.toLocaleDateString();
+            
+            // Update print content
+            updatePrintContent();
+            
+            // Open print dialog
+            window.print();
+        }
+    </script>
+</body>
+</html>
